@@ -361,7 +361,6 @@ If your plugin reads/writes custom extension data, you need to also implement `G
 
 - Blend shapes with in-betweens are currently not supported. 
 - Support for glTF files with multiple scenes is limited. 
-- Some material options (e.g. MAOS maps) are currently not exported correctly. 
 
 ## Contributing
 
