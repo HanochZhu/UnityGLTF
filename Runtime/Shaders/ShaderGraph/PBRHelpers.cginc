@@ -129,6 +129,26 @@ void WorkaroundTilingOffset_float(UnityTexture2D Tex, float4 LegacyST, out float
 	OutTex = Tex;
 }
 
+void GetMainLightDir_half(half3 viewDirFallback, out half3 lightDir)
+{
+	#if UNITY_VERSION >= 202210
+	Light mainLight = GetMainLight();
+	lightDir = mainLight.direction;
+	#else
+	lightDir = viewDirFallback;
+	#endif
+}
+
+void GetMainLightDir_float(float3 viewDirFallback, out half3 lightDir)
+{
+	#if UNITY_VERSION >= 202210
+	Light mainLight = GetMainLight();
+	lightDir = mainLight.direction;
+	#else
+	lightDir = viewDirFallback;
+	#endif
+}
+
 void Sheen_float(float roughness, float3 sheenColor, float3 albedo, float3 viewDir, float3 normal, out float3 resultColor)
 {
 	// Not physical auccurate! but looks good enough and a perfomance friendly approximation
