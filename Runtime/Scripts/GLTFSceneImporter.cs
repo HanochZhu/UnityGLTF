@@ -495,8 +495,10 @@ namespace UnityGLTF
 				Cleanup();
 				DisposeNativeBuffers();
 
+
+				UnityEngine.Debug.LogError($"Error loading glTF scene: {ex.Message} (File: {_gltfFileName})");
 				onLoadComplete?.Invoke(null, ExceptionDispatchInfo.Capture(ex));
-				Debug.Log(LogType.Error, $"Error loading file: {_gltfFileName}");
+
 				throw;
 			}
 			finally

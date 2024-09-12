@@ -22,8 +22,6 @@ namespace UnityGLTF
 
 			if (_gltfRoot.ExtensionsUsed != null && _gltfRoot.ExtensionsUsed.Contains(specGlossExtName) && def.Extensions != null && def.Extensions.ContainsKey(specGlossExtName))
 			{
-				Debug.Log(LogType.Warning, $"KHR_materials_pbrSpecularGlossiness has been deprecated, material {def.Name} may not look correct. Use `gltf-transform metalrough` or other tools to convert to PBR. (File: {_gltfFileName})");
-
 				if (!string.IsNullOrEmpty(CustomShaderName))
 				{
 					mapper = new SpecGlossMap(CustomShaderName, MaximumLod);
@@ -40,6 +38,7 @@ namespace UnityGLTF
 			}
 			else if (_gltfRoot.ExtensionsUsed != null && _gltfRoot.ExtensionsUsed.Contains(unlitExtName) && def.Extensions != null && def.Extensions.ContainsKey(unlitExtName))
 			{
+
 				if (!string.IsNullOrEmpty(CustomShaderName))
 				{
 					mapper = new UnlitMap(CustomShaderName, null, MaximumLod);
@@ -67,6 +66,9 @@ namespace UnityGLTF
 				else
 				{
 					// do we have URP or Unity 2021.2+? Use the PBR Graph Material!
+#if VERSION_PRO
+					mapper = new URPLitGraphMap();
+#else	
 #if UNITY_2021_3_OR_NEWER
 					mapper = new PBRGraphMap();
 #elif UNITY_2019_1_OR_NEWER
@@ -76,6 +78,7 @@ namespace UnityGLTF
 						mapper = new MetalRoughMap(MaximumLod);
 #else
 					mapper = new MetalRoughMap(MaximumLod);
+#endif
 #endif
 				}
 			}
@@ -119,7 +122,8 @@ namespace UnityGLTF
 				var pbr = def.PbrMetallicRoughness;
 
 				mrMapper.BaseColorFactor = pbr.BaseColorFactor.ToUnityColorRaw();
-
+				// UnityEngine.Debug.LogError(mrMapper.BaseColorFactor.ToString());
+				// UnityEngine.Debug.LogError(mrMapper.GetType().ToString());
 				if (pbr.BaseColorTexture != null)
 				{
 					TextureId textureId = pbr.BaseColorTexture.Index;

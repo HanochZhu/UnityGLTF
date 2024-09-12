@@ -152,6 +152,7 @@ namespace UnityGLTF
 #if UNITY_EDITOR
 	internal static class ShaderConversion
 	{
+		// if shader can't covert to PBRGltf, create a script that can be used to convert it manually
 		public static string CreateConversionScript(Shader oldShader, Shader newShader)
 		{
 			var classShaderName = oldShader.name

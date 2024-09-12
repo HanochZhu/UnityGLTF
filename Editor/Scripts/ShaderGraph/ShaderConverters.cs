@@ -280,7 +280,7 @@ namespace UnityGLTF
 		}
 	}
 
-	static class MaterialHelper
+	public static class MaterialHelper
 	{
 		public static float GetFloat(this Material material, int propertyIdx, float fallback)
 		{
